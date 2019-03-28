@@ -1,9 +1,18 @@
 import requests
 from bs4 import BeautifulSoup
 
+def get_description(html):
+    return BeautifulSoup(html,'lxml').find('p',itemprop="description").getText()
+
+def get_img_ref(html):
+    return BeautifulSoup(html,'lxml').find('img',itemprop="image").get('src')
+
 def main(text="маленький+принц"):
     inter_text=text.replace(" ", "+")
-    return get_books(get_html(f"https://readrate.com/rus/search?q={inter_text}&scope=books"))
+    ref_to_book=get_books(get_html(f"https://readrate.com/rus/search?q={inter_text}&scope=books"))
+    descripiton=get_description(get_html(ref_to_book))
+    img_ref=get_img_ref(get_html(ref_to_book))
+    return {'name':text,'description':descripiton,'img_ref':img_ref,'reference':ref_to_book}
 
 def get_html(url):
     r=requests.get(url)
@@ -11,17 +20,14 @@ def get_html(url):
 
 def get_books(html):
     soup= BeautifulSoup(html, 'lxml')
-    not_link= soup.find('div',class_="search-results").find_all('div',class_="title")
-    links=[]
-    for i in not_link:
-        a=i.find('a').get('href')
-        links.append(a)
-    if links :
-        return "https://readrate.com"+links[0]
+    ref_to_book= soup.find('div',class_="search-results").find('div',class_="title").find('a').get('href')
+    if ref_to_book:
+        return "https://readrate.com"+ref_to_book
     else:
         return "Такой книги не найдено"
 
 
 if __name__ =="__main__":
-
-    print(main("алиса в стране чудес"))
+    book_to_find="алиса в стране чудес"
+    ref_to_book=main(book_to_find)
+    print(main(book_to_find))
