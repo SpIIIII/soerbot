@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 def main(text="маленький+принц"):
     inter_text=text.replace(" ", "+")
     return get_books(get_html(f"https://readrate.com/rus/search?q={inter_text}&scope=books"))
