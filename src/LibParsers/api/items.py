@@ -1,7 +1,7 @@
-items = {
-    0: {"name": "First item","sorname": "Second item"}
-}
+from flask_injector import inject
+from services.provider import ItemsProvider
 
 
-def search() -> list:
-    return items
+@inject(data_provider=ItemsProvider)
+def search(data_provider) -> list:
+    return data_provider.get()
