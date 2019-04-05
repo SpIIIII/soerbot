@@ -7,7 +7,7 @@ info:
 basePath: /v1.0
 
 paths:
-  /items/:
+  /ReadRateParser/:
     get:
       responses:
         '200':
