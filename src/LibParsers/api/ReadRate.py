@@ -7,12 +7,13 @@ def get_description(html):
 def get_img_ref(html):
     return BeautifulSoup(html,'lxml').find('img',itemprop="image").get('src')
 
-def search(text="маленький+принц"):
-    inter_text=text.replace(" ", "+")
+def get(name="маленький+принц"):
+    print(name)
+    inter_text=name.replace(" ", "+")
     ref_to_book=get_books(get_html(f"https://readrate.com/rus/search?q={inter_text}&scope=books"))
     descripiton=get_description(get_html(ref_to_book))
     img_ref=get_img_ref(get_html(ref_to_book))
-    return {'name':text,'description':descripiton.strip(),'img_ref':img_ref,'reference':ref_to_book}
+    return {'name':name,'img_ref':img_ref,'reference':ref_to_book,'description':descripiton.strip()}
 
 def get_html(url):
     r=requests.get(url)
@@ -26,7 +27,7 @@ def get_books(html):
     else:
         return "Такой книги не найдено"
 
-print(search("алиса в стране чудес"))
+print(get("алиса в стране чудес"))
 if __name__ =="__main__":
     book_to_find="алиса в стране чудес"
     ref_to_book=search(book_to_find)
