@@ -32,7 +32,7 @@ def get_html(url):
 
 def get_books(html):
     soup= BeautifulSoup(html, 'lxml')
-    ref_to_book= soup.find('div',class_="books_box").find('div',class_="art-item__name").find('a').get('href')
+    ref_to_book= soup.find('div',class_="result_box").find('div',class_="art-item__name").find('a').get('href')
     
     if ref_to_book:
         return "https://www.litres.ru"+ref_to_book
