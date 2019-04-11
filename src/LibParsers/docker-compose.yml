@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  lib-app:
+    image: spiii/lib
+    restart: always
+    environment:
+      - MODE=dev
+    ports:
+      - "9090:9090"
