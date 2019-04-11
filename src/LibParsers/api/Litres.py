@@ -16,15 +16,25 @@ def get_review(html):
 
 
 def get(name="маленький+принц"):
-    inter_text=name.replace(" ", "+")
-    ref_to_book=get_books(get_html(f"https://www.litres.ru/pages/rmd_search/?q={inter_text}"))
-    html_to_book=get_html(ref_to_book)
-    descripiton=get_description(html_to_book)
-    img_ref=get_img_ref(html_to_book)
-    review=get_review (html_to_book)
-    
-    return {'name':name,'reference':ref_to_book,'img_ref':img_ref,'description':descripiton.strip(),
-    'review':review}
+    try:
+        inter_text =   name.replace(" ", "+")
+        ref_to_book =  get_books(get_html(f"https://www.litres.ru/pages/rmd_search/?q={inter_text}"))
+        html_to_book = get_html(ref_to_book)
+        descripiton =  get_description(html_to_book)
+        img_ref =      get_img_ref(html_to_book)
+        review =       get_review (html_to_book)
+        
+        return {'title':name,
+                'reference':ref_to_book,
+                'cover_link':img_ref,
+                'description':descripiton.strip(),
+                'review':review
+                }
+    except:
+        return {"title":name,
+                "status":"not found"
+            } 
+
 
 def get_html(url):
     r=requests.get(url)
@@ -39,9 +49,8 @@ def get_books(html):
     else:
         return "Такой книги не найдено"
 
-#print(get("алиса в стране чудес"))
+
 if __name__ =="__main__":
     book_to_find="алиса в стране чудес"
     get(book_to_find)
-    #ref_to_book=get(book_to_find)
     print(get(book_to_find))
